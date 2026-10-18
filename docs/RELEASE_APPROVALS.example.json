@@ -1,0 +1,15 @@
+{
+  "decision": "not_approved",
+  "copyright_and_provenance_cleared": false,
+  "dependency_licenses_and_notice_reviewed": false,
+  "security_policy_reporting_channel_configured": false,
+  "distribution_name_and_metadata_reviewed": false,
+  "preview_limitations_approved": false,
+  "repository_review_and_release_signoff": false,
+  "rights_holder": "",
+  "maintainer": "",
+  "security_reviewer": "",
+  "release_manager": "",
+  "approval_date": "",
+  "commit": ""
+}

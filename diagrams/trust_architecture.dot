@@ -1,0 +1,28 @@
+digraph trust {
+  graph [rankdir=TB, bgcolor="white", pad=0.22, nodesep=.35, ranksep=.48,
+         fontname="DejaVu Sans", splines=ortho, fontsize=13, label="CAAIF | Guarded Three-Agent Trust Architecture", labelloc=t];
+  node [fontname="DejaVu Sans", shape=box, style="rounded,filled", fontsize=10, margin="0.16,0.10", color="#bbc9d5", fillcolor="#eef3f7", fontcolor="#172635"];
+  edge [fontname="DejaVu Sans", fontsize=9, color="#536b80", arrowsize=.7];
+  app [label="Authenticated user / application\n(trusted intent registration)",fillcolor="#e8f1f8"];
+  conv [label="Conversational Agent\nuser dialogue / intent proposal"];
+  reasoning [label="Reasoning Agent\nUNTRUSTED action proposal",fillcolor="#fff1e8",color="#e0b18c"];
+  task [label="Task Agent\nconstrained execution request"];
+  source [label="Untrusted source documents\nretrieved content",fillcolor="#fff1e8",color="#e0b18c"];
+  context [label="Independent Context Provider\nprojection / provenance / current access",fillcolor="#eaf6ef",color="#8fc29f"];
+  gate [label="CAAIF Control Boundary\nidentity + contract + verified intent\nindependent action policy + permit",fillcolor="#ddf0e4",color="#589d74",penwidth=1.6];
+  tool [label="Tool / MCP Gateway\nexact action + parameter hash + replay check",fillcolor="#ddf0e4",color="#589d74",penwidth=1.6];
+  system [label="Protected system / external effect"];
+  app -> conv [label="request"];
+  app -> gate [label="trusted intent", color="#2a8553"];
+  conv -> reasoning [label="through controlled edge"];
+  source -> context [label="data (not authority)",color="#b67f55"];
+  context -> reasoning [label="selected evidence",color="#b67f55"];
+  reasoning -> gate [label="proposal only"];
+  context -> gate [label="trusted access + labels",color="#2a8553"];
+  gate -> task [label="bound authorization",color="#2a8553"];
+  task -> tool [label="request + permit"];
+  gate -> tool [style=dashed,label="policy verification",color="#2a8553"];
+  tool -> system [label="authorized effect"];
+  task -> reasoning [style=dashed,label="bounded result"];
+  reasoning -> conv [style=dashed,label="checked response"];
+}

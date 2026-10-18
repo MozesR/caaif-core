@@ -1,0 +1,47 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "profile_id": "caaif.profile.three-agent.v1",
+  "version": "1",
+  "roles": {
+    "conversational": [
+      "demo.agent.conversational"
+    ],
+    "reasoning": [
+      "demo.agent.reasoning"
+    ],
+    "task": [
+      "demo.agent.task"
+    ]
+  },
+  "allowed_edges": [
+    {
+      "from_role": "conversational",
+      "to_role": "reasoning",
+      "contract_id": "demo.three-agent.intent.v1",
+      "capability": "intent.assess"
+    },
+    {
+      "from_role": "reasoning",
+      "to_role": "task",
+      "contract_id": "demo.three-agent.execute.v1",
+      "capability": "task.execute"
+    },
+    {
+      "from_role": "task",
+      "to_role": "reasoning",
+      "contract_id": "demo.three-agent.report.v1",
+      "capability": "task.report"
+    },
+    {
+      "from_role": "reasoning",
+      "to_role": "conversational",
+      "contract_id": "demo.three-agent.response.v1",
+      "capability": "response.compose"
+    }
+  ],
+  "task_guards": {
+    "require_trusted_reasoning_decision": true,
+    "independent_dispatch_policy": true,
+    "forbid_conversational_to_task": true
+  }
+}

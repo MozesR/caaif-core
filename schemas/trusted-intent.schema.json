@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/caaif/draft3/trusted-intent.schema.json",
+  "title": "CAAIF Trusted Intent Record - draft.3",
+  "type":"object","additionalProperties":false,
+  "required":["intent_id","correlation_id","action","resource","parameters","purpose","allowed_context_refs"],
+  "properties":{
+    "intent_id":{"type":"string","minLength":1},"correlation_id":{"type":"string","minLength":1},
+    "action":{"type":"string","minLength":1},"resource":{"type":"string","minLength":1},
+    "parameters":{"type":"object"},"purpose":{"type":"string","minLength":1},
+    "allowed_context_refs":{"type":"array","items":{"type":"object","additionalProperties":false,
+      "required":["ref","version","scope"],"properties":{
+      "ref":{"type":"string"},"version":{"type":"string"},"scope":{"type":"string"}}}}
+  },
+  "description":"Must be registered by authenticated application authority, not model text."
+}

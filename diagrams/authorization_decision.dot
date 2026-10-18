@@ -1,0 +1,20 @@
+digraph decision {
+  graph [rankdir=TB, bgcolor="white", pad=.25, nodesep=.23, ranksep=.33, fontname="DejaVu Sans",fontsize=13,
+  label="Decision tree | Is this protected action permitted?",labelloc=t];
+  node [fontname="DejaVu Sans",style="rounded,filled",fontcolor="#243040",fontsize=9,margin=".10,.07",fillcolor="#edf3f7", color="#b8c7d5"];
+  edge [fontname="DejaVu Sans",fontsize=9,arrowsize=.62,color="#536b80"];
+  a [label="Reasoning proposes effect"];
+  b [shape=diamond,label="Bound principal + valid contract?",fillcolor="#e6f1fa"];
+  c [shape=diamond,label="Authenticated host intent\nwith exact action/resource/parameters?",fillcolor="#e6f1fa"];
+  d [shape=diamond,label="Context provenance\ncurrent and authorized?",fillcolor="#e6f1fa"];
+  e [shape=diamond,label="Independent policy allows?",fillcolor="#e6f1fa"];
+  f [label="Issue short-lived action-bound permit",fillcolor="#e7f4e9",color="#86b699"];
+  g [shape=diamond,label="Tool gateway: same subject,\nparameters, audience, nonce, policy?",fillcolor="#e6f1fa"];
+  yes [label="Execute one registered tool action",fillcolor="#daf1e1",color="#65a67d"];
+  no [label="DENY + redacted audit",fillcolor="#fbe8e8",color="#cf7d7d"];
+  a -> b; b -> c [label="Yes"]; b -> no [label="No"];
+  c -> d [label="Yes"]; c -> no [label="No"];
+  d -> e [label="Yes"]; d -> no [label="No"];
+  e -> f [label="Yes"]; e -> no [label="No"];
+  f -> g; g -> yes [label="Yes"]; g -> no [label="No"];
+}

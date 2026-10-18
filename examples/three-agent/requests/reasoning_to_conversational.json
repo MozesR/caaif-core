@@ -1,0 +1,21 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "request_id": "request-004",
+  "correlation_id": "corr-three-agent-001",
+  "contract_id": "demo.three-agent.response.v1",
+  "contract_version": "1",
+  "caller_id": "demo.agent.reasoning",
+  "recipient_id": "demo.agent.conversational",
+  "capability": "response.compose",
+  "context_refs": [
+    {
+      "ref": "ctx:demo/summary/1",
+      "version": "v1",
+      "scope": "workspace.summary"
+    }
+  ],
+  "input": {
+    "style": "concise"
+  },
+  "expires_at": "2030-01-01T00:00:00Z"
+}

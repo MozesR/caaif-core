@@ -1,0 +1,13 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "decision_id": "decision-demo-001",
+  "request_id": "req-demo-001",
+  "status": "allowed",
+  "reason_code": "contract_permitted",
+  "permit": {
+    "permit_id": "permit-demo-001",
+    "expires_at": "2026-10-17T17:59:30Z",
+    "request_id": "req-demo-001",
+    "contract_version": "1"
+  }
+}

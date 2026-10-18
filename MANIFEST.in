@@ -1,0 +1,23 @@
+include README.md
+include INSTALL_RC1.md
+include SECURITY.md
+include CONTRIBUTING.md
+include GOVERNANCE.md
+include CODE_OF_CONDUCT.md
+include RELEASE_CHECKLIST.md
+recursive-include spec *.md
+recursive-include schemas *.json
+recursive-include docs *.md *.json *.csv
+recursive-include examples *.py *.md *.json
+recursive-include sdk_tests *.py
+recursive-include tests *.py
+recursive-include reference *.py
+recursive-include release_tests *.py
+recursive-include benchmarks *.py *.md
+recursive-include diagrams *.mmd *.svg
+recursive-include tools *.py *.md
+prune validation_reports
+prune .venv
+prune .caaif-state
+prune .caaif-secrets
+recursive-exclude * __pycache__ *.pyc *.pyo *.bak

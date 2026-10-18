@@ -1,0 +1,26 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "contract_id": "demo.three-agent.intent.v1",
+  "version": "1",
+  "caller_id": "demo.agent.conversational",
+  "recipient_id": "demo.agent.reasoning",
+  "capability": "intent.assess",
+  "context_policy": {
+    "allowed_scopes": [
+      "session.intent"
+    ],
+    "max_inline_bytes": 1024,
+    "max_refs": 2
+  },
+  "effect": "read_only",
+  "limits": {
+    "ttl_seconds": 60,
+    "max_request_bytes": 8192
+  },
+  "profile_binding": {
+    "profile_id": "caaif.profile.three-agent.v1",
+    "profile_version": "1",
+    "caller_role": "conversational",
+    "recipient_role": "reasoning"
+  }
+}

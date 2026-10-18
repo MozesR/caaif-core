@@ -1,0 +1,18 @@
+flowchart TD
+    A[Authenticated interaction request] --> B{Caller identity valid?}
+    B -- No --> D[Deny and audit]
+    B -- Yes --> C{Contract and trusted intent match?}
+    C -- No --> D
+    C -- Yes --> E{Independent policy and provenance allow?}
+    E -- No --> D
+    E -- Yes --> F[Issue short-lived action-bound permit]
+    F --> G{Gateway validates token and task identity?}
+    G -- No --> D
+    G -- Yes --> H{Live Controller and Provider checks pass?}
+    H -- No --> D
+    H -- Yes --> I{Permit unused and tool registered?}
+    I -- No --> D
+    I -- Yes --> J[Reserve once, execute approved tool]
+    J --> K{Output disclosure lineage authorized?}
+    K -- No --> D
+    K -- Yes --> L[Return approved projection]

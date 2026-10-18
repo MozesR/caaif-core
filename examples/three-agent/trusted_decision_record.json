@@ -1,0 +1,11 @@
+{
+  "decision_ref": "decision:demo/plan-001",
+  "issuer_id": "demo.agent.reasoning",
+  "issuer_role": "reasoning",
+  "correlation_id": "corr-three-agent-001",
+  "contract_id": "demo.three-agent.execute.v1",
+  "recipient_id": "demo.agent.task",
+  "capability": "task.execute",
+  "authorized": true,
+  "expires_at": "2030-01-01T00:00:00Z"
+}

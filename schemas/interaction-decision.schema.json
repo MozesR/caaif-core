@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CAAIF Interaction Decision (draft)",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "decision_id",
+    "request_id",
+    "status",
+    "reason_code"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "const": "1.0.0-draft.2"
+    },
+    "decision_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "allowed",
+        "denied"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "permit": {
+      "type": "object",
+      "required": [
+        "permit_id",
+        "expires_at",
+        "request_id",
+        "contract_version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "permit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "contract_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "allowed"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "permit"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "permit"
+          ]
+        }
+      }
+    }
+  ]
+}

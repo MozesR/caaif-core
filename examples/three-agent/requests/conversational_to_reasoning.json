@@ -1,0 +1,21 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "request_id": "request-001",
+  "correlation_id": "corr-three-agent-001",
+  "contract_id": "demo.three-agent.intent.v1",
+  "contract_version": "1",
+  "caller_id": "demo.agent.conversational",
+  "recipient_id": "demo.agent.reasoning",
+  "capability": "intent.assess",
+  "context_refs": [
+    {
+      "ref": "ctx:demo/session/1",
+      "version": "v1",
+      "scope": "session.intent"
+    }
+  ],
+  "input": {
+    "intent": "Create a short outline from the supplied notes"
+  },
+  "expires_at": "2030-01-01T00:00:00Z"
+}

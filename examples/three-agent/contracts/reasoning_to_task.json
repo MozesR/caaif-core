@@ -1,0 +1,26 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "contract_id": "demo.three-agent.execute.v1",
+  "version": "1",
+  "caller_id": "demo.agent.reasoning",
+  "recipient_id": "demo.agent.task",
+  "capability": "task.execute",
+  "context_policy": {
+    "allowed_scopes": [
+      "workspace.instructions"
+    ],
+    "max_inline_bytes": 1024,
+    "max_refs": 2
+  },
+  "effect": "effectful",
+  "limits": {
+    "ttl_seconds": 60,
+    "max_request_bytes": 8192
+  },
+  "profile_binding": {
+    "profile_id": "caaif.profile.three-agent.v1",
+    "profile_version": "1",
+    "caller_role": "reasoning",
+    "recipient_role": "task"
+  }
+}

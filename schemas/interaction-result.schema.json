@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CAAIF Interaction Result (draft)",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "request_id",
+    "status",
+    "completed_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "const": "1.0.0-draft.2"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "failed",
+        "expired"
+      ]
+    },
+    "output": {
+      "type": "object"
+    },
+    "error_code": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "used_context_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "completed"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "output"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "output"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "request_id": "req-demo-001",
+  "correlation_id": "corr-demo-001",
+  "contract_id": "demo.documents.summarize.v1",
+  "contract_version": "1",
+  "caller_id": "demo.agent.requester",
+  "recipient_id": "demo.agent.summarizer",
+  "capability": "documents.summarize",
+  "expires_at": "2026-10-17T18:00:00Z",
+  "context_refs": [
+    {
+      "ref": "ctx:demo/document/42",
+      "version": "v3",
+      "scope": "demo.documents.summary"
+    }
+  ],
+  "input": {
+    "format": "three_bullets"
+  }
+}

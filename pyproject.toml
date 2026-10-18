@@ -1,0 +1,39 @@
+# INTERNAL DEVELOPER-PREVIEW RELEASE CANDIDATE — NOT AUTHORIZED FOR PUBLIC RELEASE.
+# Copyright ownership and adoption of a LICENSE are still pending.
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "caaif-core"
+version = "0.1.0rc1"
+description = "Experimental Context-Aware Agent Interaction Framework (CAAIF) Core SDK"
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = ["agents", "context", "agent-interoperability", "security", "experimental"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+# No public license adopted; deliberately no license field.
+
+[project.optional-dependencies]
+interop = ["langgraph>=1,<2", "agent-framework-core"]
+schema = ["jsonschema>=4"]
+test = ["jsonschema>=4"]
+dev = ["jsonschema>=4", "build>=1", "wheel", "twine>=5", "pytest>=8"]
+
+[tool.setuptools]
+include-package-data = false
+license-files = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["caaif_core*"]
+exclude = ["sdk_tests*", "tests*", "benchmarks*", "tools*", "reference*"]

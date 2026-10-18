@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://example.invalid/caaif/draft3/context-provenance.schema.json",
+  "title":"CAAIF Trusted Context Provenance - draft.3",
+  "type":"object","additionalProperties":false,
+  "required":["source_id","origin_trust","classification","allowed_purposes","allowed_recipients","allowed_actions","derived_from"],
+  "properties":{
+    "source_id":{"type":"string","minLength":1},
+    "origin_trust":{"enum":["untrusted_external","verified_internal","authenticated_user"]},
+    "classification":{"enum":["public","internal","confidential","restricted"]},
+    "allowed_purposes":{"type":"array","uniqueItems":true,"items":{"type":"string"}},
+    "allowed_recipients":{"type":"array","uniqueItems":true,"items":{"type":"string"}},
+    "allowed_actions":{"type":"array","uniqueItems":true,"items":{"type":"string"}},
+    "derived_from":{"type":"array","uniqueItems":true,"items":{"type":"string"}}
+  },
+  "description":"Labels must come from trusted ingestion, never model-authored declarations."
+}

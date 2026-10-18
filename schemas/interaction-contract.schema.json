@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CAAIF Interaction Contract (draft)",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "contract_id",
+    "version",
+    "caller_id",
+    "recipient_id",
+    "capability",
+    "context_policy",
+    "effect",
+    "limits"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "const": "1.0.0-draft.2"
+    },
+    "contract_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "caller_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "recipient_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "capability": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "context_policy": {
+      "type": "object",
+      "required": [
+        "allowed_scopes",
+        "max_inline_bytes",
+        "max_refs"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_scopes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "max_inline_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65536
+        },
+        "max_refs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "effect": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "effectful"
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "required": [
+        "ttl_seconds",
+        "max_request_bytes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ttl_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 86400
+        },
+        "max_request_bytes": {
+          "type": "integer",
+          "minimum": 256,
+          "maximum": 1048576
+        }
+      }
+    },
+    "profile_binding": {
+      "type": "object",
+      "required": [
+        "profile_id",
+        "profile_version",
+        "caller_role",
+        "recipient_role"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "profile_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "caller_role": {
+          "type": "string",
+          "enum": [
+            "conversational",
+            "reasoning",
+            "task"
+          ]
+        },
+        "recipient_role": {
+          "type": "string",
+          "enum": [
+            "conversational",
+            "reasoning",
+            "task"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+flowchart TB
+    U[User / Host Application] --> C[Conversational Agent]
+    C --> R[Reasoning Agent]
+    R -->|Untrusted action proposal| I[CAAIF Interaction Controller]
+    U -->|Authenticated trusted intent| I
+    I --> P[Independent policy & provenance checks]
+    P -->|Action-bound permit| T[Task Agent]
+    T -->|Request + permit| G[Independent Tool Gateway]
+    G -->|Live introspection| I
+    G -->|Current version + granted projection| X[(Independent Context Provider)]
+    R -->|Authorized context read| X
+    I -->|Current context verification| X
+    G -->|Authorized effect| SYS[Registered Tool / External System]
+    SYS --> T
+    T --> R
+    R -->|Disclosure must be checked| C
+    classDef trusted fill:#eaf3fa,stroke:#35637e
+    class I,P,G,X trusted

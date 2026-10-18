@@ -1,0 +1,80 @@
+{
+  "result": "PASS",
+  "sdk_tests": 161,
+  "module_suites": 12,
+  "method": "isolated subprocess per test module",
+  "suites": [
+    {
+      "suite": "test_adaptive_context_v06.py",
+      "result": "PASS",
+      "tests": 12,
+      "duration_s": 0.7
+    },
+    {
+      "suite": "test_context_benchmark_v05.py",
+      "result": "PASS",
+      "tests": 5,
+      "duration_s": 3.8
+    },
+    {
+      "suite": "test_context_reuse_v07.py",
+      "result": "PASS",
+      "tests": 16,
+      "duration_s": 0.8
+    },
+    {
+      "suite": "test_distributed_guard_v013.py",
+      "result": "PASS",
+      "tests": 27,
+      "duration_s": 5.0
+    },
+    {
+      "suite": "test_framework_adapters_v03.py",
+      "result": "PASS",
+      "tests": 11,
+      "duration_s": 0.7
+    },
+    {
+      "suite": "test_guarded_trust_v012.py",
+      "result": "PASS",
+      "tests": 19,
+      "duration_s": 0.7
+    },
+    {
+      "suite": "test_http_transport_v02.py",
+      "result": "PASS",
+      "tests": 10,
+      "duration_s": 9.8
+    },
+    {
+      "suite": "test_local_sdk.py",
+      "result": "PASS",
+      "tests": 19,
+      "duration_s": 0.7
+    },
+    {
+      "suite": "test_microsoft_bridge_v04.py",
+      "result": "PASS",
+      "tests": 7,
+      "duration_s": 0.6
+    },
+    {
+      "suite": "test_provider_dispatch_v010.py",
+      "result": "PASS",
+      "tests": 10,
+      "duration_s": 5.7
+    },
+    {
+      "suite": "test_publication_policy_v08.py",
+      "result": "PASS",
+      "tests": 10,
+      "duration_s": 7.2
+    },
+    {
+      "suite": "test_remote_context_v09.py",
+      "result": "PASS",
+      "tests": 15,
+      "duration_s": 8.3
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/caaif/draft3/execution-authorization.schema.json",
+  "title":"CAAIF Execution Authorization Binding - draft.3",
+  "type":"object","additionalProperties":false,
+  "required":["authorization_id","issuer","subject","audience","action","resource","parameters_hash","intent_id","purpose","policy_version","contract_id","contract_version","context_refs","expires_at","nonce"],
+  "properties":{
+    "authorization_id":{"type":"string"},"issuer":{"type":"string"},"subject":{"type":"string"},
+    "audience":{"type":"string"},"action":{"type":"string"},"resource":{"type":"string"},
+    "parameters_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"intent_id":{"type":"string"},
+    "purpose":{"type":"string"},"policy_version":{"type":"string"},"contract_id":{"type":"string"},
+    "contract_version":{"type":"string"},"context_refs":{"type":"array"},
+    "expires_at":{"type":"string","format":"date-time"},"nonce":{"type":"string","minLength":16}
+  },
+  "description":"Illustrative binding fields. A JSON object is NOT a signed or authenticated authorization."
+}

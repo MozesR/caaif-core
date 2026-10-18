@@ -1,0 +1,21 @@
+digraph sequence {
+ graph [rankdir=LR,bgcolor="white",pad=.25,ranksep=.52,nodesep=.32,fontsize=13,fontname="DejaVu Sans",
+ label="Interaction flow | All four role edges are checked",labelloc=t];
+ node [shape=box,style="rounded,filled",fontname="DejaVu Sans",fontsize=9,fillcolor="#edf3f7",color="#b8c7d5",margin=".11,.08"];
+ edge [fontname="DejaVu Sans",fontsize=8,arrowsize=.55,color="#536b80"];
+ c [label="Conversational\nAgent"];
+ gate [label="CAAIF\nController",fillcolor="#dff1e6",color="#70ad89"];
+ r [label="Reasoning\nAgent"];
+ t [label="Task\nAgent"];
+ tool [label="Trusted tool\ngateway",fillcolor="#dff1e6",color="#70ad89"];
+ c -> gate [label="1. intent.assess"];
+ gate -> r [label="check role/contract"];
+ r -> gate [label="2. effect proposal"];
+ gate -> t [label="policy + action permit"];
+ t -> tool [label="tool re-check"];
+ tool -> t [label="receipt"];
+ t -> gate [label="3. task.report"];
+ gate -> r [label="result edge policy"];
+ r -> gate [label="4. response.compose"];
+ gate -> c [label="output edge / disclosure check"];
+}

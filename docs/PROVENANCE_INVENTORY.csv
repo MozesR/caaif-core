@@ -1,0 +1,7 @@
+component,path_or_dependency,origin,copyright_owner,license_or_permission,evidence_or_url,distribution_type,review_owner,status,notes
+Core Python SDK,caaif_core/,TBD,TBD,TBD,TBD,first_party,TBD,PENDING,Ownership and code lineage
+Protocol and schemas,spec/ and schemas/,TBD,TBD,TBD,TBD,first_party,TBD,PENDING,Examples and text provenance
+Diagrams and docs,diagrams/ and docs/,TBD,TBD,TBD,TBD,first_party,TBD,PENDING,Image/source attribution
+LangGraph,optional dependency,third_party,TBD,TBD,TBD,dependency,TBD,PENDING,Review versions and license
+Microsoft Agent Framework,optional dependency,third_party,TBD,TBD,TBD,dependency,TBD,PENDING,Review versions and license
+JSON Schema validator,optional dependency,third_party,TBD,TBD,TBD,dependency,TBD,PENDING,Review versions and license

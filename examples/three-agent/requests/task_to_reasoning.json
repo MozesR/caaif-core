@@ -1,0 +1,21 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "request_id": "request-003",
+  "correlation_id": "corr-three-agent-001",
+  "contract_id": "demo.three-agent.report.v1",
+  "contract_version": "1",
+  "caller_id": "demo.agent.task",
+  "recipient_id": "demo.agent.reasoning",
+  "capability": "task.report",
+  "context_refs": [
+    {
+      "ref": "ctx:demo/task/44",
+      "version": "v1",
+      "scope": "task.receipt"
+    }
+  ],
+  "input": {
+    "receipt_id": "receipt-001"
+  },
+  "expires_at": "2030-01-01T00:00:00Z"
+}

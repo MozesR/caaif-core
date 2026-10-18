@@ -1,0 +1,23 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "request_id": "request-002",
+  "correlation_id": "corr-three-agent-001",
+  "contract_id": "demo.three-agent.execute.v1",
+  "contract_version": "1",
+  "caller_id": "demo.agent.reasoning",
+  "recipient_id": "demo.agent.task",
+  "capability": "task.execute",
+  "context_refs": [
+    {
+      "ref": "ctx:demo/instructions/3",
+      "version": "v1",
+      "scope": "workspace.instructions"
+    }
+  ],
+  "input": {
+    "operation": "create_outline"
+  },
+  "expires_at": "2030-01-01T00:00:00Z",
+  "decision_ref": "decision:demo/plan-001",
+  "idempotency_key": "idem-outline-001"
+}

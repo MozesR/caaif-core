@@ -1,0 +1,20 @@
+{
+  "spec_version": "1.0.0-draft.2",
+  "contract_id": "demo.documents.summarize.v1",
+  "version": "1",
+  "caller_id": "demo.agent.requester",
+  "recipient_id": "demo.agent.summarizer",
+  "capability": "documents.summarize",
+  "context_policy": {
+    "allowed_scopes": [
+      "demo.documents.summary"
+    ],
+    "max_inline_bytes": 1024,
+    "max_refs": 2
+  },
+  "effect": "read_only",
+  "limits": {
+    "ttl_seconds": 60,
+    "max_request_bytes": 8192
+  }
+}

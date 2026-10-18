@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/caaif/draft3/action-proposal.schema.json",
+  "title": "CAAIF Untrusted Action Proposal - draft.3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["proposal_id", "intent_id", "contract_id", "action", "resource", "parameters", "purpose", "context_refs"],
+  "properties": {
+    "proposal_id": {"type":"string","minLength":1},
+    "intent_id": {"type":"string","minLength":1},
+    "contract_id": {"type":"string","minLength":1},
+    "action": {"type":"string","minLength":1},
+    "resource": {"type":"string","minLength":1},
+    "parameters": {"type":"object"},
+    "purpose": {"type":"string","minLength":1},
+    "context_refs": {"type":"array","items":{"type":"object","additionalProperties":false,
+      "required":["ref","version","scope"],"properties":{
+        "ref":{"type":"string","minLength":1},"version":{"type":"string","minLength":1},"scope":{"type":"string","minLength":1}}}}
+  },
+  "description": "A proposal is never an execution grant. This is an illustrative, not stable, schema."
+}

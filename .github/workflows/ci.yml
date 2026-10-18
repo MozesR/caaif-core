@@ -1,0 +1,54 @@
+name: CAAIF Core CI — non-publishing
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: python -m pip install -e '.[test]'
+      - name: Core SDK regressions
+        run: python tools/run_sdk_tests.py --timeout 75
+      - name: Reference profile
+        run: python -m unittest discover -s tests -p 'test_three_agent_profile.py' -v
+      - name: Schema examples
+        run: python tests/validate_examples.py
+      - name: Release preparation tests
+        run: python -m unittest discover -s release_tests -v
+      - name: Experimental preview gate (informational; publication prohibited)
+        run: python tools/release_gate.py
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install builder
+        run: python -m pip install build twine
+      - name: Non-publishing package build
+        run: python -m build
+      - name: Validate distributions
+        run: python -m twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: internal-rc1-artifacts
+          path: dist/*
+# NO PyPI publish or GitHub Release job. Add only after legal and security approval.
+# Before a public repo is enabled, pin third-party Actions to reviewed immutable SHAs.
