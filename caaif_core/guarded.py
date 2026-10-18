@@ -88,6 +88,8 @@ class GuardedLocalController(LocalController):
         self._proposals: dict[str, dict] = {}
         self._permits: dict[str, dict] = {}
         self._tools: dict[str, Callable[[str, dict], Any]] = {}
+        self._trusted_resolvers: dict[str, Callable] = {}
+        self._confirmations: dict[str, dict] = {}
         super().__init__(effect_policy=self._guard_effect_policy, **kwargs)
 
     def _require_authority(self, authority: object) -> None:
@@ -119,6 +121,93 @@ class GuardedLocalController(LocalController):
                 "expires": self._clock() + timedelta(seconds=ttl_seconds),
             }
             self._event("trusted_intent_registered")
+
+    def register_trusted_parameter_resolver(self, authority: object, resolver_id: str,
+                                            resolver: Callable) -> None:
+        """Install a host-owned evidence lookup (not an agent-supplied callback)."""
+        self._require_authority(authority)
+        if not isinstance(resolver_id, str) or not resolver_id or not callable(resolver):
+            raise ValueError("invalid_parameter_resolver")
+        with self._lock:
+            if resolver_id in self._trusted_resolvers:
+                raise ValueError("duplicate_parameter_resolver")
+            self._trusted_resolvers[resolver_id] = resolver
+
+    def register_bounded_intent(self, authority: object, *, intent_id: str,
+                                correlation_id: str, action: str, resource: str,
+                                parameter_constraints: dict, purpose: str,
+                                allowed_context_refs: list[dict], approval_source: str,
+                                approval_reference: str,
+                                requires_confirmation: bool = False,
+                                ttl_seconds: int = 300) -> None:
+        """Register user/host-approved LIMITS, not LLM-generated permissions.
+
+        approval_reference identifies a host-verifiable source action. This
+        local library cannot establish that the user actually approved it;
+        the application's authenticated approval service must do so.
+        """
+        from .intent_v014 import validate_rules, validate_approval
+        self._require_authority(authority)
+        validate_approval(approval_source, approval_reference)
+        if (not all(isinstance(x, str) and x for x in
+                    (intent_id, correlation_id, action, resource, purpose))
+                or type(requires_confirmation) is not bool or type(ttl_seconds) is not int
+                or ttl_seconds < 1 or ttl_seconds > 3600
+                or not isinstance(allowed_context_refs, list)
+                or len(allowed_context_refs) > 16
+                or any(not isinstance(ref, dict) or set(ref) != {"ref", "version", "scope"}
+                       or any(not isinstance(v, str) or not v for v in ref.values())
+                       for ref in allowed_context_refs)):
+            raise ValueError("invalid_bounded_intent")
+        constraints = validate_rules(parameter_constraints)
+        with self._lock:
+            if intent_id in self._intents:
+                raise ValueError("trusted_intent_immutable")
+            self._intents[intent_id] = {
+                "intent_id": intent_id, "correlation_id": correlation_id,
+                "action": action, "resource": resource, "purpose": purpose,
+                "context_refs": copy.deepcopy(allowed_context_refs),
+                "parameter_constraints": constraints, "intent_mode": "bounded-v014",
+                "approval_source": approval_source, "approval_reference": approval_reference,
+                "requires_confirmation": requires_confirmation,
+                "expires": self._clock() + timedelta(seconds=ttl_seconds),
+            }
+            self._event("bounded_intent_registered")
+
+    def confirm_proposal(self, authority: object, *, proposal_id: str,
+                         approved_parameters: dict, approval_reference: str,
+                         ttl_seconds: int = 120) -> None:
+        """Trusted host confirms the exact model-proposed values AFTER proposal.
+
+        A user-facing integration must independently authenticate the approver
+        and display the exact values, rather than approving an LLM paraphrase.
+        """
+        self._require_authority(authority)
+        if (not isinstance(approved_parameters, dict) or not isinstance(approval_reference, str)
+                or not approval_reference.strip() or len(approval_reference) > 256
+                or type(ttl_seconds) is not int or not 1 <= ttl_seconds <= 600):
+            raise ValueError("invalid_confirmation")
+        with self._lock:
+            proposal = self._proposals.get(proposal_id)
+            if proposal is None or proposal_id in self._confirmations:
+                self._deny("confirmation_unknown_or_immutable")
+            intent = self._intents.get(proposal["intent_id"])
+            if not intent or intent.get("intent_mode") != "bounded-v014" or not intent["requires_confirmation"]:
+                self._deny("confirmation_not_applicable")
+            if _canon(approved_parameters) != _canon(proposal["parameters"]):
+                self._deny("confirmation_parameters_mismatch")
+            self._confirmations[proposal_id] = {
+                "parameters_hash": _digest(approved_parameters),
+                "approval_reference": approval_reference,
+                "expires": min(self._clock() + timedelta(seconds=ttl_seconds), intent["expires"]),
+            }
+            self._event("exact_parameters_confirmed")
+
+    def revoke_confirmation(self, authority: object, proposal_id: str) -> None:
+        self._require_authority(authority)
+        with self._lock:
+            self._confirmations.pop(proposal_id, None)
+            self._event("confirmation_revoked")
 
     def label_context(self, authority: object, *, ref: str, version: str,
                       label: ContextProvenance) -> None:
@@ -176,8 +265,11 @@ class GuardedLocalController(LocalController):
                 or contract["recipient_id"] not in self.profile["roles"]["task"]
                 or contract["capability"] != "task.execute"):
             self._deny("contract_not_guardable")
-        for field in ("action", "resource", "parameters", "purpose"):
+        for field in ("action", "resource", "purpose"):
             if proposal[field] != intent[field]:
+                self._deny("proposal_outside_trusted_intent")
+        if intent.get("intent_mode") != "bounded-v014":
+            if proposal["parameters"] != intent["parameters"]:
                 self._deny("proposal_outside_trusted_intent")
         if proposal["context_refs"] != intent["context_refs"]:
             self._deny("proposal_context_outside_intent")
@@ -194,6 +286,17 @@ class GuardedLocalController(LocalController):
                     proposal["action"] not in label.allowed_actions):
                 self._deny("provenance_policy_denied")
             labels.append(label)
+        if intent.get("intent_mode") == "bounded-v014":
+            from .intent_v014 import check_parameters
+            if not check_parameters(proposal["parameters"], intent["parameter_constraints"],
+                                    proposal=proposal, labels=tuple(labels),
+                                    trusted_resolvers=self._trusted_resolvers):
+                self._deny("proposal_outside_intent_constraints")
+            if intent["requires_confirmation"]:
+                confirmation = self._confirmations.get(proposal["proposal_id"])
+                if (confirmation is None or confirmation["expires"] <= self._clock()
+                        or confirmation["parameters_hash"] != _digest(proposal["parameters"])):
+                    self._deny("exact_parameter_confirmation_required")
         try:
             allowed = self._action_policy(copy.deepcopy(proposal), copy.deepcopy({k:v for k,v in intent.items() if k != "expires"}), tuple(labels))
         except Exception:

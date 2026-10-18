@@ -31,6 +31,18 @@ python3 -m venv .venv
 
 Optional real framework adapters: `.venv/bin/python -m pip install -e '.[interop]'` then run `examples/sdk_cross_framework_v04_demo.py`. The guarded demos use deterministic agents and synthetic data, not live LLMs.
 
+## v0.14 experimental research branch (not part of tagged RC1)
+
+The `research/v014-bounded-intent` branch develops a **bounded TrustedIntent envelope**, trusted parameter lookup, post-proposal exact-value confirmation, and online opaque single-use authorization between Controller and Tool Gateway. This work is additive, unmerged and **not approved for release or production**; the `v0.1.0rc1` tag remains immutable.
+
+```bash
+python -m unittest discover -s sdk_tests -p 'test_intent_v014.py' -v
+python -m unittest discover -s sdk_tests -p 'test_distributed_guard_v014.py' -v
+python examples/sdk_guarded_distributed_v014_demo.py
+```
+
+See [experimental v0.14 intent specification](spec/BOUNDED_INTENT_PROFILE_V014.md) and [implementation evidence](docs/V014_IMPLEMENTATION_EVIDENCE.md). A host credential or an `approval_reference` string alone **does not prove authenticated user consent**. Return-path enforcement, complete model-output lineage and real-model benchmarks remain open.
+
 ## Read first
 
 - [Installation and developer preview checklist](INSTALL_RC1.md)
