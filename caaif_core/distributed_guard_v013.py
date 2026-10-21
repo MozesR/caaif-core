@@ -169,7 +169,7 @@ class GuardControllerV013:
             def do_POST(self):
                 roles = {'/trusted/context':{'host'}, '/trusted/intent':{'host'},
                          '/proposals':{'reasoning'}, '/trusted/authorize':{'host'},
-                         '/trusted/revoke':{'host'}, '/trusted/disclose':{'host'}, '/introspect':{'gateway'},
+                         '/trusted/revoke':{'host'}, '/trusted/disclose':{'host'}, '/trusted/confirm':{'host'}, '/introspect':{'gateway'},
                          '/trusted/events':{'host'}}
                 if self.path not in roles:
                     return _reply(self, 404, {'error':'not_found'})
