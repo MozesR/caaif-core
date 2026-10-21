@@ -4,6 +4,25 @@
 
 CAAIF is an experimental Python SDK for **independently controlled agent collaboration** and **minimum-necessary context disclosure**. It supports local and localhost HTTP examples, with optional adapters for LangGraph and Microsoft Agent Framework. The **Conversational–Reasoning–Task** role split is an optional *enforceable reference profile*, not a universal requirement of the Core.
 
+## Why CAAIF? — Advantages
+
+**CAAIF enables agent autonomy without letting agents become their own authorization authority.** Rather than trusting an LLM's decision or a tool-call request as permission to act, the guarded profile places intent, context access, policy evaluation and protected execution behind independently enforced boundaries.
+
+| Advantage | Why it matters |
+| --- | --- |
+| **Independent authorization** | An agent proposes an action; a trusted authority decides whether it is allowed. Model output, prompt text and agent claims do not themselves grant permission. |
+| **Bounded autonomy** | Trusted intent and action-specific constraints limit *what* an agent may do, even when its reasoning or proposed parameters change at runtime. The experimental v0.14 branch extends this with bounded parameter rules and post-proposal confirmation. |
+| **Minimum-necessary context** | Context is scoped and checked at retrieval time rather than indiscriminately shared. This can reduce unnecessary disclosure of sensitive information and the amount of data exchanged. |
+| **Execution-time enforcement** | A Tool Gateway checks an action-bound permit before dispatching a protected operation. Revocation, mismatched actions and attempted replay can therefore be denied outside the model. |
+| **Clear separation of responsibilities** | Conversational, Reasoning and Task roles can be separated so communicating, deciding and executing do not silently collapse into one unrestricted agent. This is an optional enforceable reference profile, not a requirement for every CAAIF integration. |
+| **Framework-neutral integration** | The control model is not tied to one LLM vendor or orchestration framework. The current SDK includes optional LangGraph and Microsoft Agent Framework adapters, with broader interoperability a design objective rather than a demonstrated universal capability. |
+| **Reviewable control points** | Explicit intents, policy decisions, context access checks and tool authorizations provide well-defined places to attach logging, evidence and human oversight. A complete production audit solution remains deployment-dependent. |
+| **Compatible with existing protocols** | CAAIF is intended to complement, not replace, MCP tool connectivity or A2A-style agent communication. Its focus is **whether a proposed interaction or action is authorized**, regardless of the transport used. |
+
+**Practical example:** A mortgage-service agent may propose a rate change, but that proposal is not permission to update an account. A trusted authority must verify the permitted operation, target and parameters; where required, a trusted host must verify a real user's exact-value approval; and the execution gateway must validate the resulting authorization before invoking the backend.
+
+**What this does not claim:** CAAIF does not make an LLM's reasoning inherently correct, eliminate prompt injection or guarantee regulatory compliance. The current SDK is experimental. Its local tests support specific guard behaviors, but production-grade identity, secure distributed transport, durable replay protection, complete authenticated end-user approval, independent security assessment and comparative performance results require further work.
+
 ## The security boundary
 
 **A model-generated decision is only a proposal.** For protected actions, use the **guarded profile**: a trusted application registers an intent; CAAIF compares a Reasoning Agent proposal against that intent and independently evaluates policy; a separate Tool Gateway validates an action-bound permit at execution. Context references never grant access by themselves, and retrieval must be authorized. The earlier `LocalController.issue_decision(...authorized=True)` path remains for compatibility **but must not be used to protect side effects**.
